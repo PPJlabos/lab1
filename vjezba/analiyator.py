@@ -35,9 +35,11 @@ def eOkruzenje(Qs):
       Rs.append(g) #ako nije u skupu dodaj ga
       stog.append(g) #dodaj u stog za daljnje e prijelaze
 
-def fStanja(Qs): 
+def fStanja(Qs):
+    pass
 def minStanje(Qs):
-
+    pass
+    
 def main():
   input = open("test.lan","r")
   ulaz = input.read().replace('\n','\\''n')
