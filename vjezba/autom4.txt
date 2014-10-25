@@ -1,3 +1,5 @@
+<s_pocetno> <s_komentar>
+<s_pocetno>
 q0|$ q1,q4,q8,q16,q27,q42
 q1|\ q2
 q2|n q3
@@ -37,9 +39,15 @@ q40|$ q41
 q42|\ q43
 q43|_ q44
 
-q3 - -
+<s_komentar>
+q9|a q9
+q9|* q10
+q10|/ q130
+
+q3 - NOVI_REDAK
 q7 A -
 q15 B -
 q26 C -
 q41 D -
 q44 - -
+
