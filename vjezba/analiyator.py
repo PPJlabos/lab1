@@ -33,7 +33,7 @@ def eOkruzenje(Qs):
           break
     if (jePris==0):
       Rs.append(g) #ako nije u skupu dodaj ga
-      stog.append(g) #dodaj u stog ya daljnje e prijelaze
+      stog.append(g) #dodaj u stog za daljnje e prijelaze
 
 def fStanja(Qs): 
 def minStanje(Qs):
