@@ -72,7 +72,7 @@ def akcija(Qs):
       brRedaka=brRedaka+1
   if ('UDJI_U_STANJE' in akcije[Qs]):
     i=akcije[Qs].index('UDJI_U_STANJE')
-    stanje = sta.index(akcije[Qs][i+1])
+    stanje = akcije[Qs][i+1]
 
 brRedaka=1
 pocetak=0
