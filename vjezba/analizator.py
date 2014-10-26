@@ -78,6 +78,7 @@ brRedaka=1
 pocetak=0
 posljednji=0
 zavrsetak=0
+inputs=[]
 def ucitaj_stdin():
 
      while True:
@@ -86,34 +87,33 @@ def ucitaj_stdin():
         except EOFError:
             final = '\n'.join(inputs)
             break
-     return inputs
+     return final
 
 #input = open("tst.in","r")
 input = ucitaj_stdin()
-ulaz = input.read().replace('\n','\\''n')
+ulaz = input.replace('\n','\\''n')
+ulaz = ulaz.replace('\t','\\''t')
 ulaz = ulaz.replace(' ','\_')
+
 
 dicPrij={}
 akcije={}
 
-automat = open('autom4.txt','r')
+automat = open('izlazni.txt','r')
 pocStanja={}
 sta1 = automat.readline().rstrip().split(' ') #stanja automata
 pocStanja={}
+stanje=''
 for i in range(len(sta1)):
   klj = sta1[i].split('|')[0]
   poc =sta1[i].split('|')[1].split(',')
   pocStanja[klj]=poc
-  if (1 in poc):
+  if ('1' in poc):
     stanje=klj
-print pocStanja
-
-
 
 dicPrij = prijelazi(automat)
 automat.readline() #ucitavanje prijelaza i pocetnog stanja za jedan e-NKA
 akcije=akc(automat) #ucitavanje akcija
-
 
 while (zavrsetak<len(ulaz)):
   Q=pocStanja[stanje]
@@ -122,7 +122,8 @@ while (zavrsetak<len(ulaz)):
   while(Q):
     R=fStanja(Q)
     if(not R):
-      a=ulaz[zavrsetak]
+      if zavrsetak==len(ulaz): break
+      a=ulaz[zavrsetak] #aaa
       zavrsetak=zavrsetak+1
       Q=eOkruzenje(prijelaz(Q,a))
     else:
@@ -134,7 +135,7 @@ while (zavrsetak<len(ulaz)):
       Q=eOkruzenje(prijelaz(Q,a))
 
   if (not izraz):
-    sys.stderr.write(ulaz[pocetak])
+  #  sys.stderr.write(ulaz[pocetak])
     pocetak=pocetak+1
     zavrsetak=pocetak
   else:
