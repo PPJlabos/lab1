@@ -16,9 +16,14 @@ def je_operator(izraz, i):
     return br%2 == 0    # ukoliko je broj znakova \ paran onda je znak operator, inace je znak
 
 
-
 def dodaj_prijelaz(automat ,stanje1, stanje2, znak):
-    automat[str(stanje1)+znak] = stanje2
+    states = []
+    states.append(stanje2)
+    if str(stanje1)+"|"+znak in automat.keys():
+        states.extend(automat[str(stanje1) + "|" + znak])
+        print "here "
+    automat[str(stanje1)+"|"+znak] = states
+
 
 def nadi_iducu_zagradu(izraz, i):
    # print izraz
@@ -38,13 +43,17 @@ def nadi_iducu_zagradu(izraz, i):
 
 
     # automat ce biti dict automat, ime dicta ce biti genericko i vezano uz stanje -> dict(stanje lex analizatora, dict automata)
+
+
 def pretvori(izraz, automat):
-    #print str(izraz) + "  <=================   pretvori"
+
+    print str(izraz) + "  <=================   pretvori"
     e = "$"
     izbori = []
     elementi = []
     br_zagrada = 0 # pobroji kolicinu zagrada zasto se broje zagrade i kako se pretvaraju
     _a = 0
+    fin = 0
     pronadjen_barem_jedan_operator = False
 # ===============v==========v=============v==========radi=========v======v======v========
     for i in range(len(izraz)):
@@ -57,65 +66,97 @@ def pretvori(izraz, automat):
             # ako naidjes na izraz oblika (ab)|c razdvoji izraz na ['(ab)', 'c']
         elif br_zagrada == 0 and izraz[i] == '|' and je_operator(izraz, i):
             izbori.append(izraz[_a:i])
-            print izraz[_a:i]
+
             pronadjen_barem_jedan_operator = True
             _a=i+1
-# ===================^=======^===============^=========^==========^=====================
+        fin = i+1
+    izbori.append(izraz[_a:fin])
     lijevo_stanje = novo_stanje(automat)
     desno_stanje = novo_stanje(automat)
-    print izbori
     if pronadjen_barem_jedan_operator:
+        #==================^=======^===============^=========^==========^=====================
+
+
         for element in izbori:
            # print element + "<-----------------    element"
+            print str(izbori) + "<////////////////////////////////// izbori i fali zadnji clan izraza"
+            print element
             _temp = pretvori(element ,automat)
-            #print _temp
+            # povezi nove automate s starim automatima
             dodaj_prijelaz(automat, lijevo_stanje, _temp[0], e)
             dodaj_prijelaz(automat, _temp[1], desno_stanje, e)
     else:
         prefiksirano = False
         zadnje_stanje = lijevo_stanje
-        for element in izraz:
+        i=0
+        while i < (len(izraz)):
 
 
             if prefiksirano:
                 # slucaj 1
                 prefiksirano = False
-                if element == 't':
-                    prijelazn_znak = '\t' # oznaka za tabu u C-u
-                elif element == 'n':
-                    prijelazn_znak = '\n'
-                elif element == '_':
-                    prijelazn_znak = ' '
+                if izraz[i] == 't':
+                    prijelazni_znak = '\t' # oznaka za tabu u C-u
+                elif izraz[i] == 'n':
+                    prijelazni_znak = '\n'
+                elif izraz[i] == '_':
+                    prijelazni_znak = ' '
                 else:
-                    prijelazn_znak = element
-                a = novo_stanje(automat)
-                b = novo_stanje(automat)
-                dodaj_prijelaz(automat, a, b, e)#, prijelazn_znak)
+                    prijelazni_znak = izraz[i]
+                    a = novo_stanje(automat)
+                    b = novo_stanje(automat)
+                    dodaj_prijelaz(automat, a, b, prijelazni_znak)#, prijelazn_znak)
+
+
             else:
-                # slucaj 2
-                # TODO: pronadji odgovarajucu zatvorenu zagradu
-                j = nadi_iducu_zagradu(izraz, i)
-                _temp = pretvori( elementi , automat)
-                a = _temp[0]
-                b = _temp[1]
-                i = j
-            if i+1 < len(izraz) and izraz[i+1] == '*':
+                if izraz[i] == "\\":
+                    prefiksirano = True
+                    continue
+
+                if izraz[i] != "(":
+                    a = novo_stanje(automat)
+                    b = novo_stanje(automat)
+                    if izraz[i] == "$":
+                        dodaj_prijelaz(automat, a, b, e)
+                    else:
+                        dodaj_prijelaz(automat, a, b, izraz[i])
+                else:
+                    j = nadi_iducu_zagradu(izraz, i)
+                    _temp = pretvori( izraz[i+1:j-1], automat)
+                    a = _temp[0]
+                    b = _temp[1]
+                    i = j
+
+
+            if i+1 < (len(izraz)) and izraz[i+1] == '*':
+                print "i have it"
+                x=a
+            
                 y=b
                 a = novo_stanje(automat)
                 b = novo_stanje(automat)
+                print str(a) + ' ' + str(b) + " " + str(x) + " " + str(y)
                 dodaj_prijelaz(automat, a, x, e)
                 dodaj_prijelaz(automat, y, b, e)
                 dodaj_prijelaz(automat, a, b, e)
                 dodaj_prijelaz(automat, y, x, e)
-                i += 1
+                i = i+1
+                print automat
+
             dodaj_prijelaz(automat, zadnje_stanje, a, e)
             zadnje_stanje = b
+            i += 1
+        # end of while
+
+        dodaj_prijelaz(automat, zadnje_stanje, desno_stanje, e)
+    print str(( lijevo_stanje, desno_stanje)) + "<|||| tu smo"
     return (lijevo_stanje, desno_stanje)
 
 brojac_stanja = "brojac_stanja"
 
 automat = {}
 automat[brojac_stanja] = 0
-print pretvori("a|b|(acs|S)e|\\t|w*", automat)
-for key in automat.keys():
-    print str(key) + ":  ==>     " + str(automat[key])
+if __name__ == "__main__":
+    print pretvori("a|b*", automat)
+    for key in automat.keys():
+        print str(key) + ":  ==>     " + str(automat[key])
