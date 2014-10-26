@@ -78,8 +78,18 @@ brRedaka=1
 pocetak=0
 posljednji=0
 zavrsetak=0
+def ucitaj_stdin():
 
-input = open("tst.in","r")
+     while True:
+        try:
+            inputs.append(raw_input())
+        except EOFError:
+            final = '\n'.join(inputs)
+            break
+     return inputs
+
+#input = open("tst.in","r")
+input = ucitaj_stdin()
 ulaz = input.read().replace('\n','\\''n')
 ulaz = ulaz.replace(' ','\_')
 
