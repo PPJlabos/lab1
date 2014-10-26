@@ -1,7 +1,7 @@
 # kao neki brojac stanja u automatu
 def novo_stanje(automat):
-    automat[len(automat)+1] = ""
-    return len(automat)
+    automat["brojac_stanja"] = automat["brojac_stanja"] + 1
+    return automat[brojac_stanja]
 
 
 
@@ -13,7 +13,7 @@ def je_operator(izraz, i):
     while i-1 >= 0 and izraz[i-1]=='\\': # broji escape oznake, ukoliko se pojavi nesto sto nije \ onda prekini provjeru
         br = br + 1
         i = i - 1       # gledamo unazad od znaka koji provjeravam
-    return br&2 == 0    # ukoliko je broj znakova \ paran onda je znak operator, inace je znak
+    return br%2 == 0    # ukoliko je broj znakova \ paran onda je znak operator, inace je znak
 
 
 
@@ -21,8 +21,9 @@ def dodaj_prijelaz(automat ,stanje1, stanje2, znak):
     automat[str(stanje1)+znak] = stanje2
 
 def nadi_iducu_zagradu(izraz, i):
+   # print izraz
     br_zagrada = 1
-    for izraz[j] in range( len (izraz[i+1:])):
+    for j in range( len (izraz[i+1:])):
         if izraz[j] == ")" and je_operator (izraz, j):
             br_zagrada -= 1
             if br_zagrada == 0:
@@ -38,13 +39,16 @@ def nadi_iducu_zagradu(izraz, i):
 
     # automat ce biti dict automat, ime dicta ce biti genericko i vezano uz stanje -> dict(stanje lex analizatora, dict automata)
 def pretvori(izraz, automat):
+    #print str(izraz) + "  <=================   pretvori"
     e = "$"
     izbori = []
     elementi = []
     br_zagrada = 0 # pobroji kolicinu zagrada zasto se broje zagrade i kako se pretvaraju
     _a = 0
     pronadjen_barem_jedan_operator = False
+# ===============v==========v=============v==========radi=========v======v======v========
     for i in range(len(izraz)):
+
         if izraz[i] == '(' and je_operator(izraz, i): # provjeri je li trenutni znak operator otvorena zagrada (
             br_zagrada += 1
 
@@ -52,23 +56,27 @@ def pretvori(izraz, automat):
             br_zagrada -= 1
             # ako naidjes na izraz oblika (ab)|c razdvoji izraz na ['(ab)', 'c']
         elif br_zagrada == 0 and izraz[i] == '|' and je_operator(izraz, i):
-            izbori.extend(izraz[_a:i])
-            print izbori.extend(izraz[_a:i])
+            izbori.append(izraz[_a:i])
+            print izraz[_a:i]
             pronadjen_barem_jedan_operator = True
-            _a=i
-
+            _a=i+1
+# ===================^=======^===============^=========^==========^=====================
     lijevo_stanje = novo_stanje(automat)
     desno_stanje = novo_stanje(automat)
-
+    print izbori
     if pronadjen_barem_jedan_operator:
         for element in izbori:
+           # print element + "<-----------------    element"
             _temp = pretvori(element ,automat)
+            #print _temp
             dodaj_prijelaz(automat, lijevo_stanje, _temp[0], e)
             dodaj_prijelaz(automat, _temp[1], desno_stanje, e)
     else:
         prefiksirano = False
         zadnje_stanje = lijevo_stanje
         for element in izraz:
+
+
             if prefiksirano:
                 # slucaj 1
                 prefiksirano = False
@@ -104,7 +112,10 @@ def pretvori(izraz, automat):
             zadnje_stanje = b
     return (lijevo_stanje, desno_stanje)
 
+brojac_stanja = "brojac_stanja"
+
 automat = {}
-print pretvori("a|b|(acs|S)|\\t|w*", automat)
+automat[brojac_stanja] = 0
+print pretvori("a|b|(acs|S)e|\\t|w*", automat)
 for key in automat.keys():
     print str(key) + ":  ==>     " + str(automat[key])
