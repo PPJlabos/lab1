@@ -123,9 +123,9 @@ def zapisi_u_file(_dict_main, _dict_stanja):
     for key in _dict_stanja.keys():
         for stanje in _dict_stanja[key]:
             try:
-                #print stanje
+                ##print stanje
                 direktiva = stanje.split(")")[1]
-                print direktiva
+                #print direktiva
             except IndexError:
                 pass
             outFile.write(stanje.split(",")[1].split(")")[0].strip())
@@ -133,7 +133,7 @@ def zapisi_u_file(_dict_main, _dict_stanja):
             outFile.write(" ")
             outFile.write(direktiva.replace("[" ,"").replace("]", "").replace("'", "").replace(",",""))
             outFile.write("\n")
-                #print direkt
+                ##print direkt
 
 # ako se samostalno ucitava file pokreni ucitajUlaz()
 if __name__ == "__main__":
@@ -149,11 +149,11 @@ if __name__ == "__main__":
                 dodaj_u_dict(automat_po_stanjima, stanje, str(pretvori(regexStanja, regex_automat)) + str(automat[key])) ## pretvori vraca pair prvo i zadnje stanje
 
   #  for key in popis_pocetnihizavrsnih_stanja_automata.keys():
-   #     print popis_pocetnihizavrsnih_stanja_automata[key]
+   #     #print popis_pocetnihizavrsnih_stanja_automata[key]
     zapisi_u_file(regex_automat,automat_po_stanjima)
 
   # for key in automat_po_stanjima.keys():
-  #     print key
+  #     #print key
   #     for stanje in automat_po_stanjima[key]:
-  #         print stanje.split(")")[1]
-  #     print "###################################################################################"#
+  #         #print stanje.split(")")[1]
+  #     #print "###################################################################################"#

@@ -100,7 +100,7 @@ def pretvori(izraz, automat):
                 elif izraz[i] == 'n':
                     prijelazni_znak = '\n'
                 elif izraz[i] == '_':
-                    prijelazni_znak = '\_'
+                    prijelazni_znak = ' '
                 else:
                     prijelazni_znak = izraz[i]
                     a = novo_stanje(automat)
