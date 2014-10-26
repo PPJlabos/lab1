@@ -1,0 +1,16 @@
+#<s_pocetno>
+q1|a q3,q4
+q4|% q3
+q3|\_ q2
+q1|/ q5,q6
+q5|* q131
+
+#<s_komentar>
+q9|a q9
+q9|* q10
+q10|/ q130
+
+
+
+q130 s_pocetno
+q131 s_komentar
