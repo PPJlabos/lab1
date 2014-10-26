@@ -9,11 +9,14 @@
 #   [*]     Razdovji stanja u zasebne liste
 #   [*]     Napravi popis glavnih stanja
 #   [*]     Popis lex jedinki za koristenje u lex analizatoru
+#   [ ]     Popis prihvatljivih stanja (f stanja)
+
 automat = {}
 
 
 def generiraj_lex_automat(lines, current, automat, stanja, regex):
     _state_def = ""
+    count_stanja = 0
     for line in range (current,len(lines)): # sa svaku liniju u definiciji jezika
 
         for stanje in stanja:               # provjeri za sva stanja lexanalizatora u popisu stanja lexanalizatora
@@ -36,15 +39,17 @@ def generiraj_lex_automat(lines, current, automat, stanja, regex):
                         line = line + 1
 
                     automat[_state_def] = direktive
+                    count_stanja = count_stanja + 1
                 except IndexError:
                     break
 
-                print _state_def + ":                       ###<-------------"
+                print "\n" +_state_def
                 print automat[_state_def]
+
                 # TODO: file regex.py sadrzi generator automata stanja za regularne izraze
                 # TODO: povezi automate sa akcijama vezanim uz prihvacene regularne izraze
 
-
+    print count_stanja
 
 
 
@@ -68,6 +73,7 @@ def ucitajUlaz(automat):
         if procitao_rex_jedinke:
             # kada procita postavke jezika (lex jedinke, stanja lex automata i definicije reg izraza) napravi DKA glavnih stanja lex analizatora
             generiraj_lex_automat(inputs, line, automat, stanja_lex_analizatora, regex)
+            break
         # spremi stanja lex analizatora u listu stanja_lex_analizatora
         elif "%X" in inputs[line]:
             stanja_lex_analizatora = inputs[line].split('%X')[1].strip().split(' ')
@@ -85,7 +91,7 @@ def ucitajUlaz(automat):
                 if key in regex[reg]:
                     regex[reg] = regex[reg].replace(key, "(" + regex[key] + ")")
 
-
+    print automat
 
 #    print lex_jedinke  ## debug print
 #    print stanja_lex_analizatora   ## debug print
