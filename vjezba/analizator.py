@@ -2,12 +2,14 @@ import sys
 
 def prijelaz(Qs,z):
   Rs=[]
+  print z
   for i in Qs:
     klj=i+'|'+z #stanje|znak   pretpostavio da dict prijelaza je oblika {'q|a':'q1,q2,q3 akcija? akcija?'
     if(klj in dicPrij):
-      stanja=dicPrij[klj].split(' ')[0].split(',') #stanja
+      stanja=dicPrij[klj].split(',') #stanja
       for j in stanja:
         Rs.append(j) #dodaj u skup stanja
+  print Rs
   return Rs
 
 def eOkruzenje(Qs):
@@ -21,7 +23,7 @@ def eOkruzenje(Qs):
     s=stog.pop()  #za svako stanje ustogu e prijelaz
     klj=s+'|'+'$'
     if(klj in dicPrij):
-      stanja=dicPrij[klj].split(' ')[0].split(',')
+      stanja=dicPrij[klj].split(',')
       for g in stanja:
         if (g not in Rs):
           Rs.append(g) #ako nije u skupu dodaj ga
@@ -33,7 +35,7 @@ def prijelazi(aut):
   red=aut.readline().rstrip()
   while(red):
     lRed=red.split(' ')
-    dicPrijelazi[lRed[0]]=lRed[1]
+    dicPrijelazi[lRed[0]]=''.join(lRed[1:len(lRed)])
     red=aut.readline().rstrip() #3 7 15 26 41
   return dicPrijelazi
 
@@ -52,6 +54,8 @@ def fStanja(Qs):
     if(i in akcije):
       Fs.append(i)
   Fs.sort()
+  print Fs
+  print '*********'
   return Fs
 
 def akcija(Qs):
@@ -107,25 +111,34 @@ stanje=''
 for i in range(len(sta1)):
   klj = sta1[i].split('|')[0]
   poc =sta1[i].split('|')[1].split(',')
+  poc.pop()
   pocStanja[klj]=poc
   if ('1' in poc):
     stanje=klj
+print pocStanja
 
 dicPrij = prijelazi(automat)
 automat.readline() #ucitavanje prijelaza i pocetnog stanja za jedan e-NKA
 akcije=akc(automat) #ucitavanje akcija
 
+print dicPrij
+print stanje
+
 while (zavrsetak<len(ulaz)):
   Q=pocStanja[stanje]
   Q=eOkruzenje(Q)
+  print Q
+  print '<<<<<<'
   izraz=''
   while(Q):
     R=fStanja(Q)
     if(not R):
       if zavrsetak==len(ulaz): break
-      a=ulaz[zavrsetak] #aaa
+      a=ulaz[zavrsetak]
+      print ulaz[zavrsetak]
       zavrsetak=zavrsetak+1
       Q=eOkruzenje(prijelaz(Q,a))
+      print Q
     else:
       izraz=R[0]
       posljednji=zavrsetak
