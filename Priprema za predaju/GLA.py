@@ -72,10 +72,13 @@ def ucitajUlaz(automat):
         except EOFError:
             final = '\n'.join(inputs)
             break
+            
+    print final
 #    #printfinal ## debug print
     #parsiraj ulaznu datoteku
 #    #printlen(inputs)  ## debug print
     for line in range (len(inputs)):
+        
         if procitao_rex_jedinke:
             # kada procita postavke jezika (lex jedinke, stanja lex automata i definicije reg izraza) napravi DKA glavnih stanja lex analizatora
             stanja = generiraj_lex_automat(inputs, line, automat, stanja_lex_analizatora, regex)
