@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 {znamenka} 0|1|2|3|4|5|6|7|8|9
 {hexZnamenka} {znamenka}|a|b|c|d|e|f|A|B|C|D|E|F
 {broj} {znamenka}{znamenka}*|0x{hexZnamenka}{hexZnamenka}*
@@ -26,17 +25,10 @@ UDJI_U_STANJE S_komentar
 UDJI_U_STANJE S_pocetno
 }
 <S_komentar>\n
-=======
-{x} yy
-%X S_a
-%L A B C D E
-<S_a>\n
->>>>>>> 10feb472ef331ba354f5a07232add3e18c9e594a
 {
 -
 NOVI_REDAK
 }
-<<<<<<< HEAD
 <S_komentar>{sviZnakovi}
 {
 -
@@ -87,29 +79,4 @@ UDJI_U_STANJE S_pocetno
 {
 UMINUS
 VRATI_SE 1
-=======
-<S_a>\_
-{
--
-}
-<S_a>\_(\t|$)XYZ
-{
-A
-}
-<S_a>b(\(ttt\))*
-{
-B
-}
-<S_a>c(\$|$)123
-{
-C
-}
-<S_a>d\|321
-{
-D
-}
-<S_a>e\{x\}\*
-{
-E
->>>>>>> 10feb472ef331ba354f5a07232add3e18c9e594a
 }
