@@ -111,7 +111,7 @@ def zapisi_u_file(_dict_main, _dict_stanja):
     for key in _dict_stanja.keys():
         outFile.write(key + "|")
         for stanje in automat_po_stanjima[key]:
-            outFile.write(stanje.split(",")[0].split("(")[1] + ",")
+            outFile.write(stanje.split(",")[0].split("(")[1].strip() + ",")
         outFile.write(" ")
     outFile.write("\n")
 
