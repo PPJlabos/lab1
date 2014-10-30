@@ -67,6 +67,7 @@ def akcija(Qs):
     zavrsetak=pocetak+pomak
     posljednji=zavrsetak
   if (a!='-'):
+    print "hello"
     print a+' '+str(brRedaka)+' '+ulaz[pocetak:posljednji]
   if ('NOVI_REDAK' in akcije[Qs]):
       brRedaka=brRedaka+1
@@ -93,7 +94,7 @@ def ucitaj_stdin():
 input = ucitaj_stdin()
 ulaz = input.replace('\n','\\''n')
 ulaz = ulaz.replace('\t','\\''t')
-ulaz = ulaz.replace(' ','\_')
+# ulaz = ulaz.replace(' ','\_')
 
 
 dicPrij={}
@@ -101,12 +102,12 @@ akcije={}
 
 automat = open('izlazni.txt','r')
 pocStanja={}
-sta1 = automat.readline().rstrip().split(' ') #stanja automata
+states = automat.readline().rstrip().split(' ') #stanja automata #sto se ucitava?? #Kako izgleda original?
 pocStanja={}
 stanje=''
-for i in range(len(sta1)):
-  klj = sta1[i].split('|')[0]
-  poc =sta1[i].split('|')[1].split(',')
+for state in states:
+  klj = state.split('|')[0]
+  poc = state.split('|')[1].split(',')
   pocStanja[klj]=poc
   if ('1' in poc):
     stanje=klj
@@ -136,6 +137,7 @@ while (zavrsetak<len(ulaz)):
 
   if (not izraz):
   #  sys.stderr.write(ulaz[pocetak])
+    print str(pocetak) + "   <<<<< pocetak"
     pocetak=pocetak+1
     zavrsetak=pocetak
   else:
