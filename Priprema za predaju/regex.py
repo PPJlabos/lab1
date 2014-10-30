@@ -33,20 +33,25 @@ def dodaj_prijelaz(automat ,stanje1, stanje2, znak):
 
 
 def nadi_iducu_zagradu(izraz, i):
-    i = i-1
+
     # count brackets until you find new matching one
     #print __name__
     #print i
-    print izraz
-    br_zagrada = 1
-    for j in range( len (izraz[i:])):
-        if izraz[j] == ")" and je_operator (izraz, j):
+    print izraz + "         << ajmo nac neku zagradu"
+    br_zagrada = 0
+
+    #for j in range( len (izraz(i:))):
+    while i < len(izraz):
+        print i
+        if izraz[i] in ")" and je_operator (izraz, i):
             br_zagrada = br_zagrada - 1
             if br_zagrada == 0:
-                return j
-        elif izraz[j] == "(" and je_operator(izraz, j):
+                return i
+        elif izraz[i] in "(" and je_operator(izraz, i):
             br_zagrada += 1
+        i = i +1
     # if all else fails return original character
+    print " oops i found nothing <<<<<<<<<"
     return i
 
 def pretvori(izraz, automat):
@@ -121,12 +126,13 @@ def pretvori(izraz, automat):
                         dodaj_prijelaz(automat, a, b, e)
                     else:
                         dodaj_prijelaz(automat, a, b, izraz[i])
-                elif izraz[i] == "(":
+                elif izraz[i] in "(":
                     j = nadi_iducu_zagradu(izraz, i)
-                    print izraz[i+1:j-1] + "                <<< _temp = pretvori(izraz[i+1:j-1], automat)   -> izraz[i+1:j-1]   linija: 124"
-                    _temp = pretvori( izraz[i+1:j-1], automat)
+                    print izraz[i+1:j-1] + "                <<< _temp = pretvori(izraz[i+1:j-2], automat)   -> izraz[i+1:j-1]   linija: 124"
+                    _temp = pretvori( izraz[i+1:j], automat)
                     a = _temp[0]
                     b = _temp[1]
+                    print "            >>>>>" + str(j) + "<<<<< string "
                     i = j
 
 
