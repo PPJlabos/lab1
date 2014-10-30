@@ -21,8 +21,8 @@ automat = {}
 def generiraj_lex_automat(lines, current, automat, stanja, regex):
     _state_def = ""
     count_stanja = 0
-    for line in range (current,len(lines)): # sa svaku liniju u definiciji jezika
-
+    line = current
+    while line < len(lines):
         for stanje in stanja:               # provjeri za sva stanja lexanalizatora u popisu stanja lexanalizatora
 
             if "<"+stanje+">" in lines[line]:       # ako se odnosi na trenutno stanje
@@ -32,9 +32,7 @@ def generiraj_lex_automat(lines, current, automat, stanja, regex):
                 for key in regex.keys():        #dopuni nazive regexa s punim izrazom
                     if key in _state_def:
                         _state_def =  _state_def.replace(key, "(" + regex[key] + ")") # dopuni ostatak regularnih izraza
-
                 direktive = []
-#        line = line + 2
                 try:
                     line = line + 2
                     while lines[line].strip() != "}":
@@ -46,7 +44,9 @@ def generiraj_lex_automat(lines, current, automat, stanja, regex):
                     count_stanja = count_stanja + 1
                 except IndexError:
                     break
+        line += 1
     return stanja
+
                 #print"\n" +_state_def
                 #printautomat[_state_def]
 
@@ -72,13 +72,13 @@ def ucitajUlaz(automat):
         except EOFError:
             final = '\n'.join(inputs)
             break
-            
+
     print final
 #    #printfinal ## debug print
     #parsiraj ulaznu datoteku
 #    #printlen(inputs)  ## debug print
     for line in range (len(inputs)):
-        
+
         if procitao_rex_jedinke:
             # kada procita postavke jezika (lex jedinke, stanja lex automata i definicije reg izraza) napravi DKA glavnih stanja lex analizatora
             stanja = generiraj_lex_automat(inputs, line, automat, stanja_lex_analizatora, regex)
@@ -92,7 +92,9 @@ def ucitajUlaz(automat):
             procitao_rex_jedinke = True
         # spremi definicije regex izraza u dict regex
         else:
-            regex[inputs[line].split(' ')[0]] = inputs[line].split(' ')[1]
+
+                regex[inputs[line].split(' ')[0]] = inputs[line].split(' ')[1]
+            
 
     # dopuni regularne izraze (zamjeni skracenice s punim regularnim izrazom)
     for key in regex.keys():
@@ -120,7 +122,7 @@ def zapisi_u_file(_dict_main, _dict_stanja):
 
 
     for key in _dict_main.keys():
-        outFile.write(key + ' ' + str(_dict_main[key]).replace("[", "").replace("]", "") + "\n")
+        outFile.write(key + ' ' + str(_dict_main[key]).replace("[", "").replace("]", "").replace(" ", "")+ "\n")
 
     outFile.write("\n###\n")
     for key in _dict_stanja.keys():

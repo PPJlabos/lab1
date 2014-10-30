@@ -3,28 +3,25 @@
 #[ ] TODO:
 #   [*]     Povezi ostatak izraza osnovnih regexa u ostatku datoteke
 #   [*]     Stavi svaki izraz u datoteci u dict
-#   [ ]     Generiraj automat stanja za svaki regex vezan u kljuc dicta
+#   [*]     Generiraj automat stanja za svaki regex vezan u kljuc dicta
 #   [*]     Generiraj popis automata prema glavnim stanjima
 #   [*]     Generiraj automat za zadani regex
 #   [*]     Razdovji stanja u zasebne liste
 #   [*]     Napravi popis glavnih stanja
 #   [*]     Popis lex jedinki za koristenje u lex analizatoru
-#   [ ]     Popis prihvatljivih stanja (f stanja)
+#   [*]     Popis prihvatljivih stanja (f stanja)
 import regex
 from regex import *
 
-
-
 automat = {}
-
 
 def generiraj_lex_automat(lines, current, automat, stanja, regex):
     _state_def = ""
     count_stanja = 0
-    for line in range (current,len(lines)): # sa svaku liniju u definiciji jezika
-
+    line = current
+    #for line in range (current,len(lines)): # sa svaku liniju u definiciji jezika
+    while line < (len(lines)):
         for stanje in stanja:               # provjeri za sva stanja lexanalizatora u popisu stanja lexanalizatora
-
             if "<"+stanje+">" in lines[line]:       # ako se odnosi na trenutno stanje
                 _state_def = lines[line]
 
@@ -46,6 +43,8 @@ def generiraj_lex_automat(lines, current, automat, stanja, regex):
                     count_stanja = count_stanja + 1
                 except IndexError:
                     break
+                
+        line += 1
     return stanja
                 #print"\n" +_state_def
                 #printautomat[_state_def]
@@ -109,9 +108,9 @@ def zapisi_u_file(_dict_main, _dict_stanja):
 
     outFile = open ("analizator/izlazni.txt", "w")
     for key in _dict_stanja.keys():
-        outFile.write(key + "|")
+        outFile.write(key )
         for stanje in automat_po_stanjima[key]:
-            outFile.write(stanje.split(",")[0].split("(")[1] + ",")
+            outFile.write("," + stanje.split(",")[0].split("(")[1])
         outFile.write(" ")
     outFile.write("\n")
 
@@ -152,8 +151,4 @@ if __name__ == "__main__":
    #     print popis_pocetnihizavrsnih_stanja_automata[key]
     zapisi_u_file(regex_automat,automat_po_stanjima)
 
-  # for key in automat_po_stanjima.keys():
-  #     print key
-  #     for stanje in automat_po_stanjima[key]:
-  #         print stanje.split(")")[1]
-  #     print "###################################################################################"#
+ 
