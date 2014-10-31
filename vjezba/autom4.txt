@@ -1,4 +1,4 @@
-<s_pocetno> <s_komentar>
+s_pocetno|q0 s_komentar|q9
 <s_pocetno>
 q0|$ q1,q4,q8,q16,q27,q42
 q1|\ q2
