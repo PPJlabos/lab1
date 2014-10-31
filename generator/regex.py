@@ -9,24 +9,32 @@ def novo_stanje(automat):
 # ukoliko je broj \ neparan (\) ona je znak, npr. \( -> je oznaka za zagradu dok je ( operator selekcije u izrazu ()
 # \ se koristi kao escape oznaka, npr u C-u \\ -> znaci \, \n -> novi red \t -> tab \" navodnik unutar stringa ##print ("\"") -> "
 def je_operator(izraz, i):
-    br = 0
-    while i-1 >= 0 and izraz[i-1]=='\\': # broji escape oznake, ukoliko se pojavi nesto sto nije \ onda prekini provjeru
-        br = br + 1
-        i = i - 1       # gledamo unazad od znaka koji provjeravam
-    return br%2 == 0    # ukoliko je broj znakova \ paran onda je znak operator, inace je znak
+    brojac = 0
+    # count backwards the '\' sign until something else comes up
+    while i-1 >= 0 and izraz[i-1]=='\\':
+        brojac = brojac + 1
+        i = i - 1
+        # if number of "\" characters is pair the the sign is not escaped
+    return brojac%2 == 0
 
 
 def dodaj_prijelaz(automat ,stanje1, stanje2, znak):
+    #add new state to transition list of FMS
     states = []
+
+    # add new state to the list
     states.append(stanje2)
+
+    # if transition already exists then save all old states and add new one
     if str(stanje1)+"|"+znak in automat.keys():
         states.extend(automat[str(stanje1) + "|" + znak])
-        ##print "here "
+    # save new transition definition to states table
     automat[str(stanje1)+"|"+znak] = states
 
 
 def nadi_iducu_zagradu(izraz, i):
-   # ##print izraz
+    # count brackets until you find new matching one
+    print __name__
     br_zagrada = 1
     for j in range( len (izraz[i+1:])):
         if izraz[j] == ")" and je_operator (izraz, j):
@@ -35,19 +43,10 @@ def nadi_iducu_zagradu(izraz, i):
                 return j
         elif izraz[j] == "(" and je_operator(izraz, j):
             br_zagrada += 1
-
+    # if all else fails return original character
     return i
 
-
-
-
-
-    # automat ce biti dict automat, ime dicta ce biti genericko i vezano uz stanje -> dict(stanje lex analizatora, dict automata)
-
-
 def pretvori(izraz, automat):
-
-    ##print str(izraz) + "  <=================   pretvori"
     e = "$"
     izbori = []
     elementi = []
@@ -157,7 +156,7 @@ brojac_stanja = "brojac_stanja"
 automat = {}
 automat[brojac_stanja] = 0
 if __name__ == "__main__":
-    ##print pretvori("a|b*", automat)
+    print pretvori(raw_input("enter regex here >"), automat)
     for key in automat.keys():
 
         ##print str(key) + ":  ==>     " + str(automat[key])
