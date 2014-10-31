@@ -128,7 +128,7 @@ def pretvori(izraz, automat):
                         dodaj_prijelaz(automat, a, b, izraz[i])
                 elif izraz[i] in "(":
                     j = nadi_iducu_zagradu(izraz, i)
-                    print izraz[i+1:j-1] + "                <<< _temp = pretvori(izraz[i+1:j-2], automat)   -> izraz[i+1:j-1]   linija: 124"
+                    print izraz[i+1:j] + "                <<< _temp = pretvori(izraz[i+1:j], automat)   -> izraz[i+1:j-1]   linija: 124"
                     _temp = pretvori( izraz[i+1:j], automat)
                     a = _temp[0]
                     b = _temp[1]

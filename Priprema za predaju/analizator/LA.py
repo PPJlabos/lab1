@@ -63,11 +63,11 @@ def akcija(Qs):
   a=akcije[Qs][0]
   if ('VRATI_SE' in akcije[Qs]):
     i=akcije[Qs].index('VRATI_SE')
-    pomak=int(akcije[Qs][i+1])
+    pomak=int(akcije[Qs][i+2])
     zavrsetak=pocetak+pomak
     posljednji=zavrsetak
   if (a!='-'):
-    print "hello"
+    # print "hello"     neki debug print
     print a+' '+str(brRedaka)+' '+ulaz[pocetak:posljednji]
   if ('NOVI_REDAK' in akcije[Qs]):
       brRedaka=brRedaka+1
@@ -94,7 +94,7 @@ def ucitaj_stdin():
 input = ucitaj_stdin()
 ulaz = input.replace('\n','\\''n')
 ulaz = ulaz.replace('\t','\\''t')
-# ulaz = ulaz.replace(' ','\_')
+ulaz = ulaz.replace(' ','\_')
 
 
 dicPrij={}
@@ -103,12 +103,17 @@ akcije={}
 automat = open('izlazni.txt','r')
 pocStanja={}
 states = automat.readline().rstrip().split(' ') #stanja automata #sto se ucitava?? #Kako izgleda original?
+
 pocStanja={}
 stanje=''
 for state in states:
   klj = state.split('|')[0]
   poc = state.split('|')[1].split(',')
   pocStanja[klj]=poc
+  print poc
+  print ('1' in poc)
+  print "\n\n\n"
+
   if ('1' in poc):
     stanje=klj
 
@@ -137,7 +142,7 @@ while (zavrsetak<len(ulaz)):
 
   if (not izraz):
   #  sys.stderr.write(ulaz[pocetak])
-    print str(pocetak) + "   <<<<< pocetak"
+    ##print str(pocetak) + "   <<<<< pocetak" debug print
     pocetak=pocetak+1
     zavrsetak=pocetak
   else:
