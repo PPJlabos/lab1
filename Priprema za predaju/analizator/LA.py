@@ -2,6 +2,11 @@ import sys
 
 def prijelaz(Qs,z):
   Rs=[]
+  if(z=='$'):
+    z='$$'
+  if(z==' '):
+    z='$$$'
+
   for i in Qs:
     klj=i+'|'+z #stanje|znak   pretpostavio da dict prijelaza je oblika {'q|a':'q1,q2,q3 akcija? akcija?'
     if(klj in dicPrij):
@@ -74,7 +79,7 @@ def akcija(Qs):
     posljednji=zavrsetak
   if (a!='-'):
     # print "hello"     neki debug print
-    print a+' '+str(brRedaka)+' '+ulaz[pocetak:posljednji].replace('\_',' ')
+    print a+' '+str(brRedaka)+' '+ulaz[pocetak:posljednji]
   if ('NOVI_REDAK' in akcije[Qs]):
       #print akcije[Qs]
       brRedaka=brRedaka+1
@@ -101,9 +106,7 @@ def ucitaj_stdin():
 
 ulaz = ucitaj_stdin().replace('\n','\\''n')
 ulaz = ulaz.replace('\t','\\''t')
-ulaz = ulaz.replace(' ','\_')
 
-#print ulaz
 
 dicPrij={}
 akcije={}

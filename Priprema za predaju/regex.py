@@ -119,13 +119,16 @@ def pretvori(izraz, automat):
                     prijelazni_znak = "n"
 
                 elif izraz[i] == '_':
-                    prijelazni_znak = '\\'
+                    prijelazni_znak = '$$$'
                     a = novo_stanje(automat)
                     b = novo_stanje(automat)
                     dodaj_prijelaz(automat, a, b, prijelazni_znak)
-                    dodaj_prijelaz(automat, zadnje_stanje, a, e)    # TODO: provjeri funkcionalnost ove linije
-                    zadnje_stanje = b
-                    prijelazni_znak = "_"
+
+                elif izraz[i] == '$':
+                    prijelazni_znak = '$$'
+                    a = novo_stanje(automat)
+                    b = novo_stanje(automat)
+                    dodaj_prijelaz(automat, a, b, prijelazni_znak)
 
                 else:
                     prijelazni_znak = izraz[i]
