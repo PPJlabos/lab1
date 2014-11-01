@@ -1,15 +1,15 @@
 ### regex je popis osnovnig skracenica regexa koja se slaze u ostatak automata
 
-#[ ] TODO:
+#[*] TODO:
 #   [*]     Povezi ostatak izraza osnovnih regexa u ostatku datoteke
 #   [*]     Stavi svaki izraz u datoteci u dict
-#   [ ]     Generiraj automat stanja za svaki regex vezan u kljuc dicta
+#   [*]     Generiraj automat stanja za svaki regex vezan u kljuc dicta
 #   [*]     Generiraj popis automata prema glavnim stanjima
 #   [*]     Generiraj automat za zadani regex
 #   [*]     Razdovji stanja u zasebne liste
 #   [*]     Napravi popis glavnih stanja
 #   [*]     Popis lex jedinki za koristenje u lex analizatoru
-#   [ ]     Popis prihvatljivih stanja (f stanja)
+#   [*]     Popis prihvatljivih stanja (f stanja)
 import regex
 from regex import *
 
@@ -156,7 +156,7 @@ if __name__ == "__main__":
             if "<"+ stanje+">" in key:
                 regexStanja = key.replace("<"+stanje+">", "")
                 dodaj_u_dict(automat_po_stanjima, stanje, str(pretvori(regexStanja, regex_automat)) + str(automat[key]) ) ## pretvori vraca pair prvo i zadnje stanje
-            
+
     for key in automat_po_stanjima.keys():
         for element in automat_po_stanjima[ key]:
             pass
