@@ -22,19 +22,22 @@ def generiraj_lex_automat(lines, current, automat, stanja, regex):
     _state_def = ""
     count_stanja = 0
     line = current
+    prioritet = 0
     while line < len(lines):
         for stanje in stanja:               # provjeri za sva stanja lexanalizatora u popisu stanja lexanalizatora
 
             if "<"+stanje+">" in lines[line]:       # ako se odnosi na trenutno stanje
                 _state_def = lines[line]
 
-                # TODO: treba preraditi spremi definiciju u dict stanja =>> krivo jer ce se prepisati definicija automata
+                # TODO[*]: treba preraditi spremi definiciju u dict stanja =>> krivo jer ce se prepisati definicija automata
                 for key in regex.keys():        #dopuni nazive regexa s punim izrazom
                     if key in _state_def:
                         _state_def =  _state_def.replace(key, "(" + regex[key] + ")") # dopuni ostatak regularnih izraza
                 direktive = []
                 try:
                     line = line + 2
+                    direktive.append(prioritet)
+                    prioritet += 1
                     while lines[line].strip() != "}":
                         direktive.append(lines[line])
 
@@ -44,6 +47,7 @@ def generiraj_lex_automat(lines, current, automat, stanja, regex):
                     count_stanja = count_stanja + 1
                 except IndexError:
                     break
+                print direktive
         line += 1
     return stanja
 
@@ -63,18 +67,15 @@ def ucitajUlaz(automat):
     inputs = []
     stanja = []
     regex = {}
-    final = ''
     procitao_rex_jedinke = False
     # procitaj ulaznu datoteku definicije jezika, spremi svaki red kao novi clan liste inputs
     while True:
         try:
             inputs.append(raw_input())
         except EOFError:
-            final = '\n'.join(inputs)
             break
 
-    print final
-#    #printfinal ## debug print
+
     #parsiraj ulaznu datoteku
 #    #printlen(inputs)  ## debug print
     for line in range (len(inputs)):
@@ -94,7 +95,7 @@ def ucitajUlaz(automat):
         else:
 
                 regex[inputs[line].split(' ')[0]] = inputs[line].split(' ')[1]
-            
+
 
     # dopuni regularne izraze (zamjeni skracenice s punim regularnim izrazom)
     for key in regex.keys():
@@ -147,18 +148,18 @@ if __name__ == "__main__":
     stanja = []
     stanja = ucitajUlaz(automat)
     automat_po_stanjima= {} ## za svako stanje pise pocetak i kraj automata
+
     for key in automat.keys():
+        #print key
         for stanje in stanja:
+
             if "<"+ stanje+">" in key:
                 regexStanja = key.replace("<"+stanje+">", "")
-                dodaj_u_dict(automat_po_stanjima, stanje, str(pretvori(regexStanja, regex_automat)) + str(automat[key])) ## pretvori vraca pair prvo i zadnje stanje
-
-  #  for key in popis_pocetnihizavrsnih_stanja_automata.keys():
-   #     #print popis_pocetnihizavrsnih_stanja_automata[key]
+                dodaj_u_dict(automat_po_stanjima, stanje, str(pretvori(regexStanja, regex_automat)) + str(automat[key]) ) ## pretvori vraca pair prvo i zadnje stanje
+            
+    for key in automat_po_stanjima.keys():
+        for element in automat_po_stanjima[ key]:
+            pass
+            #print element
+        #print "----------------------------------------"
     zapisi_u_file(regex_automat,automat_po_stanjima)
-
-  # for key in automat_po_stanjima.keys():
-  #     #print key
-  #     for stanje in automat_po_stanjima[key]:
-  #         #print stanje.split(")")[1]
-  #     #print "###################################################################################"#

@@ -7,7 +7,7 @@ def novo_stanje(automat):
 
 # prebroji koliko ima \ u nizu prije znaka, ukoliko je broj paran (\\) onda je operator
 # ukoliko je broj \ neparan (\) ona je znak, npr. \( -> je oznaka za zagradu dok je ( operator selekcije u izrazu ()
-# \ se koristi kao escape oznaka, npr u C-u \\ -> znaci \, \n -> novi red \t -> tab \" navodnik unutar stringa ##print ("\"") -> "
+# \ se koristi kao escape oznaka, npr u C-u \\ -> znaci \, \n -> novi red \t -> tab \" navodnik unutar stringa ###print("\"") -> "
 def je_operator(izraz, i):
     brojac = 0
     # count backwards the '\' sign until something else comes up
@@ -35,14 +35,14 @@ def dodaj_prijelaz(automat ,stanje1, stanje2, znak):
 def nadi_iducu_zagradu(izraz, i):
 
     # count brackets until you find new matching one
-    #print __name__
-    #print i
-    print izraz + "         << ajmo nac neku zagradu"
+    ##print__name__
+    ##printi
+    #printizraz + "         << ajmo nac neku zagradu"
     br_zagrada = 0
 
     #for j in range( len (izraz(i:))):
     while i < len(izraz):
-        print i
+        #printi
         if izraz[i] in ")" and je_operator (izraz, i):
             br_zagrada = br_zagrada - 1
             if br_zagrada == 0:
@@ -51,11 +51,11 @@ def nadi_iducu_zagradu(izraz, i):
             br_zagrada += 1
         i = i +1
     # if all else fails return original character
-    print " oops i found nothing <<<<<<<<<"
+    #print" oops i found nothing <<<<<<<<<"
     return i
 
 def pretvori(izraz, automat):
-    print izraz + "         << pretvori(izraz, automat) -> izraz   line: 52"
+    ##printizraz + "         << pretvori(izraz, automat) -> izraz   line: 52"
     e = "$"
     izbori = []
     elementi = []
@@ -74,7 +74,7 @@ def pretvori(izraz, automat):
             # ako naidjes na izraz oblika (ab)|c razdvoji izraz na ['(ab)', 'c']
         elif br_zagrada == 0 and izraz[i] == '|' and je_operator(izraz, i):
             izbori.append(izraz[_a:i])
-            #print izbori
+            ##printizbori
             pronadjen_barem_jedan_operator = True
             _a=i+1
         fin = i+1
@@ -85,7 +85,7 @@ def pretvori(izraz, automat):
 
     if pronadjen_barem_jedan_operator:
         for element in izbori:
-            print element + "           _temp = pretvori(element, automat) -> element    line: 82"
+            ##printelement + "           _temp = pretvori(element, automat) -> element    line: 82"
             _temp = pretvori(element ,automat)
             # povezi automate
             dodaj_prijelaz(automat, lijevo_stanje, _temp[0], e)
@@ -95,17 +95,38 @@ def pretvori(izraz, automat):
         zadnje_stanje = lijevo_stanje
         i=0
         while i < (len(izraz)):
-            print izraz[i] + "           za i=     " + str(i)
+            ##printizraz[i] + "           za i=     " + str(i)
 
             if prefiksirano:
                 # slucaj 1
                 prefiksirano = False
                 if izraz[i] == 't':
-                    prijelazni_znak = '\\t' # oznaka za tabu u C-u
+                    prijelazni_znak = '\\' # oznaka za tabu u C-u
+                    a = novo_stanje(automat)
+                    b = novo_stanje(automat)
+                    dodaj_prijelaz(automat, a, b, prijelazni_znak)
+                    dodaj_prijelaz(automat, zadnje_stanje, a, e)    # TODO: provjeri funkcionalnost ove linije
+                    zadnje_stanje = b
+                    prijelazni_znak = "t"
+
                 elif izraz[i] == 'n':
-                    prijelazni_znak = '\\n'
+                    prijelazni_znak = '\\'
+                    a = novo_stanje(automat)
+                    b = novo_stanje(automat)
+                    dodaj_prijelaz(automat, a, b, prijelazni_znak)
+                    dodaj_prijelaz(automat, zadnje_stanje, a, e)    # TODO: provjeri funkcionalnost ove linije
+                    zadnje_stanje = b
+                    prijelazni_znak = "n"
+
                 elif izraz[i] == '_':
-                    prijelazni_znak = '\\_'
+                    prijelazni_znak = '\\'
+                    a = novo_stanje(automat)
+                    b = novo_stanje(automat)
+                    dodaj_prijelaz(automat, a, b, prijelazni_znak)
+                    dodaj_prijelaz(automat, zadnje_stanje, a, e)    # TODO: provjeri funkcionalnost ove linije
+                    zadnje_stanje = b
+                    prijelazni_znak = "_"
+
                 else:
                     prijelazni_znak = izraz[i]
                 a = novo_stanje(automat)
@@ -128,37 +149,37 @@ def pretvori(izraz, automat):
                         dodaj_prijelaz(automat, a, b, izraz[i])
                 elif izraz[i] in "(":
                     j = nadi_iducu_zagradu(izraz, i)
-                    print izraz[i+1:j] + "                <<< _temp = pretvori(izraz[i+1:j], automat)   -> izraz[i+1:j-1]   linija: 124"
+                    ##printizraz[i+1:j] + "                <<< _temp = pretvori(izraz[i+1:j], automat)   -> izraz[i+1:j-1]   linija: 124"
                     _temp = pretvori( izraz[i+1:j], automat)
                     a = _temp[0]
                     b = _temp[1]
-                    print "            >>>>>" + str(j) + "<<<<< string "
+                    ##print"            >>>>>" + str(j) + "<<<<< string "
                     i = j
 
 
 
             if i+1 < (len(izraz)) and izraz[i+1] == '*':
-                ##print "i have it"
+                ###print"i have it"
                 x=a
 
                 y=b
                 a = novo_stanje(automat)
                 b = novo_stanje(automat)
-                ##print str(a) + ' ' + str(b) + " " + str(x) + " " + str(y)
+                ###printstr(a) + ' ' + str(b) + " " + str(x) + " " + str(y)
                 dodaj_prijelaz(automat, a, x, e)
                 dodaj_prijelaz(automat, y, b, e)
                 dodaj_prijelaz(automat, a, b, e)
                 dodaj_prijelaz(automat, y, x, e)
                 i = i+1
-                ##print automat
+                ###printautomat
 
-            dodaj_prijelaz(automat, zadnje_stanje, a, e)
+            dodaj_prijelaz(automat, zadnje_stanje, a, e)    # TODO: provjeri funkcionalnost ove linije
             zadnje_stanje = b
             i += 1
         # end of while
 
         dodaj_prijelaz(automat, zadnje_stanje, desno_stanje, e)
-    ##print str(( lijevo_stanje, desno_stanje)) + "<|||| tu smo"
+    ###printstr(( lijevo_stanje, desno_stanje)) + "<|||| tu smo"
     return (lijevo_stanje, desno_stanje)
 
 brojac_stanja = "brojac_stanja"
@@ -166,6 +187,7 @@ brojac_stanja = "brojac_stanja"
 automat = {}
 automat[brojac_stanja] = 0
 if __name__ == "__main__":
-    print pretvori(raw_input("enter regex here >"), automat)
-    for key in automat.keys():
-        print str(key) + ":  ==>     " + str(automat[key])
+    pass
+    #printpretvori(raw_input("enter regex here >"), automat)
+    #for key in automat.keys():
+        #printstr(key) + ":  ==>     " + str(automat[key])

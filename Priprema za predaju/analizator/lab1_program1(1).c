@@ -10,7 +10,7 @@ void fun(int xYz) {
     return;
 }
 
-// glavni program "testira osnovne kljucne rijeci i operatore za lekser"
+
 int main(void) {
     int A[512];
     int t[] = {1,2,3};
@@ -23,7 +23,7 @@ int main(void) {
     strct.t = 'b';
     strct.x = 4321;
     
-    xYz = 12345; // nekakav komentar
+    xYz = 12345;
     abc = &xYz;
     abc = (&xYz);
     *abc = *abc+++xYz;
@@ -33,8 +33,8 @@ int main(void) {
     
     tmp[1] = 'b';
     tmp[2] = '\n';
-    tmp[3] = '''; // greska
-    tmp[0] = '\'';
+    tmp[3] = '''"
+    tmp[0] = '\'';// jednoliniijski komentar
     for (i=0; i<4; ++i) {
         tmp[i] = (char)*abc; /* komentar
                                 komentar

@@ -44,15 +44,21 @@ def akc(aut):
     lRed=red.split(' ')
     dicAkcije[lRed[0]]=lRed[1:len(lRed)]
     red=aut.readline().rstrip() #3 7 15 26 41
+ #print dicAkcije
   return dicAkcije
 
 def fStanja(Qs):
   Fs=[]
+  Rs=[]
   for i in Qs:
     if(i in akcije):
-      Fs.append(i)
+      Fs.append(akcije[i][0]+'|'+i)
   Fs.sort()
-  return Fs
+  for j in Fs:
+    temp=j.split('|')[1]
+    Rs.append(temp) 
+
+  return Rs
 
 def akcija(Qs):
   global brRedaka
@@ -60,16 +66,17 @@ def akcija(Qs):
   global zavrsetak
   global posljednji
   global stanje
-  a=akcije[Qs][0]
+  a=akcije[Qs][1]
   if ('VRATI_SE' in akcije[Qs]):
     i=akcije[Qs].index('VRATI_SE')
-    pomak=int(akcije[Qs][i+2])
+    pomak=int(akcije[Qs][i+1])
     zavrsetak=pocetak+pomak
     posljednji=zavrsetak
   if (a!='-'):
     # print "hello"     neki debug print
     print a+' '+str(brRedaka)+' '+ulaz[pocetak:posljednji]
   if ('NOVI_REDAK' in akcije[Qs]):
+      #print akcije[Qs]
       brRedaka=brRedaka+1
   if ('UDJI_U_STANJE' in akcije[Qs]):
     i=akcije[Qs].index('UDJI_U_STANJE')
@@ -86,16 +93,17 @@ def ucitaj_stdin():
         try:
             inputs.append(raw_input())
         except EOFError:
-            final = '\n'.join(inputs)
             break
+     final = '\n'.join(inputs)
      return final
 
 #input = open("tst.in","r")
-input = ucitaj_stdin()
-ulaz = input.replace('\n','\\''n')
+
+ulaz = ucitaj_stdin().replace('\n','\\''n')
 ulaz = ulaz.replace('\t','\\''t')
 ulaz = ulaz.replace(' ','\_')
 
+#print ulaz
 
 dicPrij={}
 akcije={}
@@ -110,9 +118,9 @@ for state in states:
   klj = state.split('|')[0]
   poc = state.split('|')[1].split(',')
   pocStanja[klj]=poc
-  print poc
-  print ('1' in poc)
-  print "\n\n\n"
+  #print poc
+  #print ('1' in poc)
+  #print "\n\n\n"
 
   if ('1' in poc):
     stanje=klj
@@ -122,11 +130,13 @@ automat.readline() #ucitavanje prijelaza i pocetnog stanja za jedan e-NKA
 akcije=akc(automat) #ucitavanje akcija
 
 while (zavrsetak<len(ulaz)):
+  #print stanje
   Q=pocStanja[stanje]
   Q=eOkruzenje(Q)
   izraz=''
   while(Q):
     R=fStanja(Q)
+    #print str(R) + "                      << this is sparta"
     if(not R):
       if zavrsetak==len(ulaz): break
       a=ulaz[zavrsetak] #aaa
@@ -141,11 +151,12 @@ while (zavrsetak<len(ulaz)):
       Q=eOkruzenje(prijelaz(Q,a))
 
   if (not izraz):
-  #  sys.stderr.write(ulaz[pocetak])
-    ##print str(pocetak) + "   <<<<< pocetak" debug print
+    #sys.stderr.write(ulaz[pocetak])
+    #print str(pocetak) + "   <--------------------------------------------------- pocetak" #debug print
     pocetak=pocetak+1
     zavrsetak=pocetak
   else:
+    #print "<<<<<<<<<<<<<<<<<<<<          " + str(izraz)
     akcija(izraz)
     pocetak=posljednji
     zavrsetak=pocetak
