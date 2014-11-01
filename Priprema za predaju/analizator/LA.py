@@ -2,6 +2,9 @@ import sys
 
 def prijelaz(Qs,z):
   Rs=[]
+  if(z=='$'):
+    z='$$'
+
   for i in Qs:
     klj=i+'|'+z #stanje|znak   pretpostavio da dict prijelaza je oblika {'q|a':'q1,q2,q3 akcija? akcija?'
     if(klj in dicPrij):
