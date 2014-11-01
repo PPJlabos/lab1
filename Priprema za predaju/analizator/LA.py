@@ -56,7 +56,7 @@ def fStanja(Qs):
   Fs.sort()
   for j in Fs:
     temp=j.split('|')[1]
-    Rs.append(temp) 
+    Rs.append(temp)
 
   return Rs
 
@@ -74,7 +74,7 @@ def akcija(Qs):
     posljednji=zavrsetak
   if (a!='-'):
     # print "hello"     neki debug print
-    print a+' '+str(brRedaka)+' '+ulaz[pocetak:posljednji]
+    print a+' '+str(brRedaka)+' '+ulaz[pocetak:posljednji].replace('\_',' ')
   if ('NOVI_REDAK' in akcije[Qs]):
       #print akcije[Qs]
       brRedaka=brRedaka+1
