@@ -4,8 +4,6 @@ def prijelaz(Qs,z):
   Rs=[]
   if(z=='$'):
     z='$$'
-  if(z==' '):
-    z='$$$'
 
   for i in Qs:
     klj=i+'|'+z #stanje|znak   pretpostavio da dict prijelaza je oblika {'q|a':'q1,q2,q3 akcija? akcija?'
@@ -106,7 +104,7 @@ def ucitaj_stdin():
 
 ulaz = ucitaj_stdin().replace('\n','\\''n')
 ulaz = ulaz.replace('\t','\\''t')
-
+#print ulaz
 
 dicPrij={}
 akcije={}

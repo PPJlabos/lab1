@@ -69,9 +69,6 @@ VRATI_SE 1
 {
 -
 NOVI_REDAK
-<<<<<<< HEAD
-}
-=======
 }
 <S_unarni>-
 {
@@ -83,4 +80,3 @@ UDJI_U_STANJE S_pocetno
 UMINUS
 VRATI_SE 1
 }
->>>>>>> c6d6ddf368a2b52cbeb7117ff76f6870c092b809
